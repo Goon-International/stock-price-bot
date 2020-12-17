@@ -1,17 +1,17 @@
-from coinapi_rest_v1 import CoinAPIv1
 from discord_webhook import DiscordWebhook
 from config import *
-import datetime, sys
+import sys, requests, json
+from datetime import date, timedelta
 
-test_key = sys.argv[1]
+def get_info(stocks, api_key):
+    infos = []
+    
+    for stock in stocks:
+        yesterday = (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')
+        r = requests.get(f'https://api.polygon.io/v1/open-close/{stock}/{yesterday}?apiKey={api_key}')
+        infos.append(json.loads(r.text))
 
-api = CoinAPIv1(test_key)
-exchanges = api.metadata_list_exchanges()
-
-def get_info(crypto):
-    exchange_rate = api.exchange_rates_get_specific_rate(crypto, 'USD')
-
-    return exchange_rate
+    return infos
 
 def discord(message):
     webhook = DiscordWebhook(
@@ -23,12 +23,18 @@ def notify(message):
     discord(message)
 
 if __name__ == "__main__":
-    cryptos = ['BTC']
-    infos = []
+    api_key = sys.argv[1]
+    stocks = ['PTON', 'PLTR', 'PUBM', 'UPST']
+    infos = infos = get_info(stocks, api_key)
 
-    for crypto in cryptos:
-        infos.append(get_info(crypto))
+    msg = 'Today\'s Date: {}\nYesterday\'s stock prices:\n\n'.format(date.today().strftime('%Y-%m-%d'))
+    for i in range(len(infos)):
+        msg += '{} ({})\nOpen: ${:.2f}\nClose: ${:.2f}\n\n'.format(
+            stocks[i],
+            infos[i]['from'],
+            infos[i]['open'], 
+            infos[i]['close']
+        )
 
-    for info in infos:
-        msg = '{} price ({}): ${:.2f}'.format(info['asset_id_base'], info['asset_id_quote'], info['rate'])
-        notify(msg)
+    notify(msg.strip())
+    
