@@ -23,15 +23,15 @@ def notify(message):
     discord(message)
 
 if __name__ == "__main__":
-    api_key = sys.argv[1]
-    stocks = ['PTON', 'PLTR', 'PUBM', 'UPST']
-    infos = get_info(stocks, api_key)
+    api_key, stocks = sys.argv[1], sys.argv[2]
+    stocks_list = stocks.split(',')
+    infos = get_info(stocks_list, api_key)
 
     msg = 'Today\'s Date: {}\nYesterday\'s stock prices:\n\n'.format(date.today().strftime('%Y-%m-%d'))
     for i in range(len(infos)):
         gain = ((infos[i]['close'] / infos[i]['open']) - 1.0) * 100
         msg += '{} ({})\nOpen: ${:.2f}\nClose: ${:.2f}\nGain: {:.2f}%\n\n'.format(
-            stocks[i],
+            stocks_list[i],
             infos[i]['from'],
             infos[i]['open'], 
             infos[i]['close'],

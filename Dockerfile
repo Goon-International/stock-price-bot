@@ -3,6 +3,7 @@ FROM python:3.8
 
 # set env variable
 ENV API_KEY "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"
+ENV stocks "PTON,PLTR,PUBM,UPST,DASH"
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
@@ -14,4 +15,4 @@ RUN pip install -r requirements.txt
 COPY src .
 
 # command to run on container start
-CMD [ "sh", "-c", "python ./bot.py ${API_KEY}" ]
+CMD [ "sh", "-c", "python ./bot.py ${API_KEY} ${stocks}" ]

@@ -13,8 +13,10 @@
 Example run: `python src/bot.py YOUR-API-KEY`
 
 ### Run it via Docker:
-1. Build image: `docker build -t crypto-price-bot .`
-2. Run container: `docker run -e API_KEY="YOUR-API-KEY" stock-price-bot`
+1. Build image: `docker build -t stock-price-bot .`
+2. Run container: 
+    1. Default stocks: `docker run -e API_KEY="YOUR-API-KEY" stock-price-bot`
+    2. Stock overrides: `docker run -e API_KEY="YOUR-API-KEY" -e stocks="FB,AAPL,AMZN,NFLX,GOOG" stock-price-bot`
 
 ### Demo
 Below is an example of the Stock Price Bot running and connected to a Discord Webhook.
