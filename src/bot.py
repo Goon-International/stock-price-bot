@@ -29,11 +29,13 @@ if __name__ == "__main__":
 
     msg = 'Today\'s Date: {}\nYesterday\'s stock prices:\n\n'.format(date.today().strftime('%Y-%m-%d'))
     for i in range(len(infos)):
-        msg += '{} ({})\nOpen: ${:.2f}\nClose: ${:.2f}\n\n'.format(
+        gain = (infos[i]['close'] / infos[i]['open']) - 1.0
+        msg += '{} ({})\nOpen: ${:.2f}\nClose: ${:.2f}\nGain: {:.2f}%\n\n'.format(
             stocks[i],
             infos[i]['from'],
             infos[i]['open'], 
-            infos[i]['close']
+            infos[i]['close'],
+            gain
         )
 
     notify(msg.strip())
