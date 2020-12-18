@@ -25,12 +25,12 @@ def notify(message):
 if __name__ == "__main__":
     api_key = sys.argv[1]
     stocks = ['PTON', 'PLTR', 'PUBM', 'UPST']
-    infos = infos = get_info(stocks, api_key)
+    infos = get_info(stocks, api_key)
 
     msg = 'Today\'s Date: {}\nYesterday\'s stock prices:\n\n'.format(date.today().strftime('%Y-%m-%d'))
     for i in range(len(infos)):
-        gain = (infos[i]['close'] / infos[i]['open']) - 1
-        msg += '{} ({})\nOpen: ${:.2f}\nClose: ${:.2f}\nGain: {}%\n\n'.format(
+        gain = (infos[i]['close'] / infos[i]['open']) - 1.0
+        msg += '{} ({})\nOpen: ${:.2f}\nClose: ${:.2f}\nGain: {:.2f}%\n\n'.format(
             stocks[i],
             infos[i]['from'],
             infos[i]['open'], 
